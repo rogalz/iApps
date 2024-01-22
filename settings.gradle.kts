@@ -16,4 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "iApps"
 include(":app")
 include(":data")
-include(":domain")
+include(":features:images")

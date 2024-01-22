@@ -1,4 +1,4 @@
-package com.example.domain
+package com.example.images
 
 import org.junit.Test
 

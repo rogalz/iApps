@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -33,6 +34,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":features:images"))
+
+    implementation("com.google.dagger:hilt-android:2.47")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    ksp("com.google.dagger:hilt-android-compiler:2.47")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
