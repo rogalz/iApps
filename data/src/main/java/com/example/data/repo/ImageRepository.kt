@@ -5,6 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface ImageRepository {
 
-    suspend fun fetchImages(): Result<List<ImageEntity>>
+    suspend fun fetchImages(tags:String)
     suspend fun getImages(): Flow<List<ImageEntity>>
 }

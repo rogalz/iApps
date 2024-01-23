@@ -3,8 +3,9 @@ package com.example.images.ui
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -50,7 +51,7 @@ class ListFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.viewState.collect { uiState ->
                     when (uiState) {
-                        ImageListViewState.Error -> onError()
+                        is ImageListViewState.Error -> onError(uiState)
                         ImageListViewState.Loading -> onLoading()
                         is ImageListViewState.Success -> onSuccess(uiState)
                     }
@@ -59,16 +60,26 @@ class ListFragment : Fragment() {
         }
     }
 
-    private fun onError() {
-        Toast.makeText(requireContext(), "onError", Toast.LENGTH_LONG).show()
+    private fun onError(viewState: ImageListViewState.Error) {
+        with(binding) {
+            loadingView.visibility = GONE
+            errorMessage.text = viewState.message
+            errorMessage.visibility = VISIBLE
+        }
     }
 
     private fun onLoading() {
-        Toast.makeText(requireContext(), "onLoading", Toast.LENGTH_LONG).show()
+        with(binding) {
+            loadingView.visibility = VISIBLE
+            errorMessage.visibility = GONE
+        }
     }
 
     private fun onSuccess(viewState: ImageListViewState.Success) {
-        Toast.makeText(requireContext(), "onSuccess", Toast.LENGTH_LONG).show()
+        with(binding) {
+            loadingView.visibility = GONE
+            errorMessage.visibility = GONE
+        }
         adapter.submitList(viewState.images)
     }
 

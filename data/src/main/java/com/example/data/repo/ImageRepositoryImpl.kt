@@ -4,15 +4,17 @@ import com.example.data.api.ImagesApiService
 import com.example.data.database.ImageDao
 import com.example.data.database.model.ImageEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class ImageRepositoryImpl @Inject constructor(
     private val apiService: ImagesApiService,
     private val imageDao: ImageDao,
 ) : ImageRepository {
 
-    override suspend fun fetchImages(): Result<List<ImageEntity>> {
-        val response = apiService.getImages()
+    override suspend fun fetchImages(tags: String) {
+        val response = apiService.getImages(tags)
 
         if (response.isSuccessful) {
             response.body()?.items?.map {
@@ -22,15 +24,10 @@ internal class ImageRepositoryImpl @Inject constructor(
                     previewURL = it.media?.url ?: "",
                     date = it.dateTaken ?: "",
                 )
-            }.apply {
-                this?.let {
-                    imageDao.insertAllImages(it)
-                    return Result.success(this)
-                }
+            }?.apply {
+                imageDao.insertAllImages(this)
             }
         }
-
-        return Result.failure(Throwable(response.message()))
     }
 
     override suspend fun getImages(): Flow<List<ImageEntity>> = imageDao.getAll()
