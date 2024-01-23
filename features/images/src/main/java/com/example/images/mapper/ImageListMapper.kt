@@ -10,7 +10,6 @@ class ImageListMapper @Inject constructor(
     fun from(entity: ImageEntity): ImageItem {
         val description = getDescription(entity)
         return ImageItem(
-            id = entity.id,
             description = description,
             url = entity.url,
             previewURL = entity.previewURL,
