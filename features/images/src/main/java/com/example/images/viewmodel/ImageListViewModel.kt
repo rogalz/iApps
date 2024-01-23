@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.repo.ImageRepository
 import com.example.images.ImageListContract
+import com.example.images.mapper.ImageListMapper
 import com.example.images.model.ImageListViewState
 import com.example.images.reducer.ImageListReducer
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +17,10 @@ import javax.inject.Inject
 class ImageListViewModel @Inject constructor(
     private val reducer: ImageListReducer,
     private val repository: ImageRepository,
-//    private val mapper: ImageListMapper,
+    private val mapper: ImageListMapper,
 ) : ViewModel(), ImageListContract.ViewModel {
 
-    private val _viewState: StateFlow<ImageListViewState> = MutableStateFlow(ImageListViewState.Loading)
+    private val _viewState: MutableStateFlow<ImageListViewState> = MutableStateFlow(ImageListViewState.Loading)
     override val viewState: StateFlow<ImageListViewState> = _viewState
 
     init {
@@ -28,12 +29,15 @@ class ImageListViewModel @Inject constructor(
 
     private fun fetchImages() {
         viewModelScope.launch {
+            _viewState.value = reducer.reduceLoading()
+
             repository.fetchImages()
-                .onSuccess {
-//                    state.value = reducer.reduceImageList(currentState, list = it)
+                .onSuccess { entities ->
+                    val list = entities.map { entity -> mapper.from(entity) }.sortedByDescending { it.date }
+                    _viewState.value = reducer.reduceImageList(list)
                 }
                 .onFailure {
-//                    state.value = reducer.reduceError(currentState, error = true)
+                    _viewState.value = reducer.reduceError()
                 }
         }
     }

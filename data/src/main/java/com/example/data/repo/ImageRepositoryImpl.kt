@@ -20,7 +20,7 @@ internal class ImageRepositoryImpl @Inject constructor(
                     description = it.description ?: "",
                     url = it.link ?: "",
                     previewURL = it.media?.url ?: "",
-                    data = it.dateTaken ?: "",
+                    date = it.dateTaken ?: "",
                 )
             }.apply {
                 this?.let {

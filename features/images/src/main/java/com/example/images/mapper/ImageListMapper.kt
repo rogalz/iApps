@@ -1,27 +1,29 @@
-//package com.example.list.mapper
-//
-//import com.example.images.model.ImageListState
-//import com.example.list.ui.ImageListScreenViewState
-//import javax.inject.Inject
-//
-//class ImageListMapper @Inject constructor(
-//    private val imageEntityMapper: ImageEntityMapper,
-//) {
-//
-//    fun from(state: ImageListState): ImageListScreenViewState {
-//        return when {
-//            state.error -> ImageListScreenViewState.Error(search = state.search)
-//            state.loading -> ImageListScreenViewState.Loading(search = state.search)
-//            else -> mapToSuccess(state)
-//        }
-//    }
-//
-//    private fun mapToSuccess(state: ImageListState): ImageListScreenViewState.Success {
-//        return ImageListScreenViewState.Success(
-//            list = state.list.map { imageEntityMapper.from(it) },
-//            search = state.search,
-//            isDialogVisible = state.isGoToDetailsDialogVisible,
-//        )
-//    }
-//
-//}
+package com.example.images.mapper
+
+import com.example.data.database.model.ImageEntity
+import com.example.images.model.ImageItem
+import javax.inject.Inject
+
+class ImageListMapper @Inject constructor(
+    private val timerFormatter: TimeFormatter
+) {
+    fun from(entity: ImageEntity): ImageItem {
+        val description = getDescription(entity)
+        return ImageItem(
+            id = entity.id,
+            description = description,
+            url = entity.url,
+            previewURL = entity.previewURL,
+            date = timerFormatter.from(entity.date)
+        )
+    }
+
+    private fun getDescription(entity: ImageEntity): String {
+        val prefix = "title=\""
+        val suffix = "\">"
+        val regex = "$prefix(.+)$suffix".toRegex()
+        val match = regex.find(entity.description)
+        val machAsString = match?.value ?: ""
+        return machAsString.removePrefix(prefix).removeSuffix(suffix)
+    }
+}
