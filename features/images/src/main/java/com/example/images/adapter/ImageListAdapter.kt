@@ -12,7 +12,6 @@ import com.example.images.model.ImageItem
 
 class ImageListAdapter(private val onClickListener: (String) -> Unit) : ListAdapter<ImageItem, ImageListAdapter.ImageViewHolder>(ImagesDiffUtil()) {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val binding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ImageViewHolder(binding, onClickListener)
@@ -25,18 +24,23 @@ class ImageListAdapter(private val onClickListener: (String) -> Unit) : ListAdap
 
     class ImageViewHolder(private val binding: ItemImageBinding, private val onClickListener: (String) -> Unit) : RecyclerView.ViewHolder(binding.root) {
         fun bind(image: ImageItem) {
-
             with(binding) {
                 imagePreview.load(image.previewURL)
-                if (image.description.isBlank()) {
-                    description.visibility = GONE
-                } else {
-                    description.visibility = VISIBLE
-                    description.text = image.description
-                }
                 date.text = image.date
+                setDescription(image)
 
                 itemBackground.setOnClickListener { onClickListener.invoke(image.url) }
+            }
+        }
+
+        private fun setDescription(image: ImageItem) {
+            with(binding.description) {
+                if (image.description.isBlank()) {
+                    visibility = GONE
+                } else {
+                    visibility = VISIBLE
+                    text = image.description
+                }
             }
         }
     }

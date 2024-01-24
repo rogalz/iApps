@@ -11,7 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.images.ImageListContract
+import com.example.images.R
 import com.example.images.adapter.ImageListAdapter
 import com.example.images.databinding.FragmentImagesListBinding
 import com.example.images.model.ImageListViewState
@@ -19,6 +21,7 @@ import com.example.images.navigator.ImageListNavigatorImpl
 import com.example.images.viewmodel.ImageListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class ListFragment : Fragment() {
@@ -37,9 +40,19 @@ class ListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentImagesListBinding.inflate(inflater, container, false)
-        binding.imagesList.adapter = adapter
-        binding.tryAgain.setOnClickListener { viewModel.getData() }
+        setRecyclerView()
+        setOnclick()
         return binding.root
+    }
+
+    private fun setOnclick() {
+        binding.tryAgain.setOnClickListener { viewModel.getData() }
+    }
+
+    private fun setRecyclerView() {
+        val numberOfColumns = resources.getInteger(R.integer.columns)
+        binding.imagesList.layoutManager = GridLayoutManager(requireContext(), numberOfColumns)
+        binding.imagesList.adapter = adapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

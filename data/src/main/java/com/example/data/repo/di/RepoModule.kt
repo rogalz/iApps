@@ -1,4 +1,4 @@
-package com.example.repo.di
+package com.example.data.repo.di
 
 import com.example.data.api.ImagesApiService
 import com.example.data.database.ImageDao

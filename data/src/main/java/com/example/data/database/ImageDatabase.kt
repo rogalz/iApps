@@ -8,4 +8,5 @@ import com.example.data.database.model.ImageEntity
 @Database(entities = [ImageEntity::class], version = 1)
 abstract class ImageDatabase : RoomDatabase() {
     abstract fun imageDao(): ImageDao
+
 }

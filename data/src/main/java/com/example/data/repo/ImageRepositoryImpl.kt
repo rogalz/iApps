@@ -16,7 +16,6 @@ internal class ImageRepositoryImpl @Inject constructor(
     override suspend fun getImages(): Flow<List<ImageEntity>> = flow {
         emit(tryToGetImages())
         emit(fetchImages())
-
     }.distinctUntilChanged()
 
     private suspend fun tryToGetImages(): List<ImageEntity> {
