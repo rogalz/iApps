@@ -10,6 +10,10 @@ class ImageListReducer @Inject constructor() {
         return ImageListViewState.Success(imageEntities)
     }
 
+    fun reduceLoading(): ImageListViewState {
+        return ImageListViewState.Loading
+    }
+
     fun reduceError(errorMessage: String): ImageListViewState {
         return ImageListViewState.Error(errorMessage)
     }

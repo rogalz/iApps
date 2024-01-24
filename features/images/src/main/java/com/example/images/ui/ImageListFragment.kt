@@ -38,6 +38,7 @@ class ListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentImagesListBinding.inflate(inflater, container, false)
         binding.imagesList.adapter = adapter
+        binding.tryAgain.setOnClickListener { viewModel.getData() }
         return binding.root
     }
 
@@ -65,6 +66,7 @@ class ListFragment : Fragment() {
             loadingView.visibility = GONE
             errorMessage.text = viewState.message
             errorMessage.visibility = VISIBLE
+            binding.tryAgain.visibility = VISIBLE
         }
     }
 
@@ -72,6 +74,7 @@ class ListFragment : Fragment() {
         with(binding) {
             loadingView.visibility = VISIBLE
             errorMessage.visibility = GONE
+            binding.tryAgain.visibility = GONE
         }
     }
 
@@ -79,6 +82,7 @@ class ListFragment : Fragment() {
         with(binding) {
             loadingView.visibility = GONE
             errorMessage.visibility = GONE
+            binding.tryAgain.visibility = GONE
         }
         adapter.submitList(viewState.images)
     }

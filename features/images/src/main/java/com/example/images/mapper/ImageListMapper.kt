@@ -7,7 +7,12 @@ import javax.inject.Inject
 class ImageListMapper @Inject constructor(
     private val timerFormatter: TimeFormatter
 ) {
-    fun from(entity: ImageEntity): ImageItem {
+
+    fun from(entities: List<ImageEntity>): List<ImageItem> {
+        return entities.map { entity -> from(entity) }.sortedByDescending { imageItem -> imageItem.date }
+    }
+
+    private fun from(entity: ImageEntity): ImageItem {
         val description = getDescription(entity)
         return ImageItem(
             description = description,
