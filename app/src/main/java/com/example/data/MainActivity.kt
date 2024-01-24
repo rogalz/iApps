@@ -2,7 +2,6 @@ package com.example.data
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.iapps.R
 import com.example.iapps.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

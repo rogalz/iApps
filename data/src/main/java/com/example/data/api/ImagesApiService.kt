@@ -8,6 +8,6 @@ import retrofit2.http.Query
 internal interface ImagesApiService {
 
     @GET("services/feeds/photos_public.gne?format=json&nojsoncallback=1")
-    suspend fun getImages(@Query("tags") tag: String="cat"): Response<ImagesResponse>
+    suspend fun getImages(@Query("tags") tag: String = "cat"): Response<ImagesResponse>
 
 }

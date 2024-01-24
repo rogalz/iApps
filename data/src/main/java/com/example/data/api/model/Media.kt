@@ -2,8 +2,8 @@ package com.example.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Media (
+data class Media(
 
-  @SerializedName("m" ) val url : String?
+    @SerializedName("m") val url: String?
 
 )
