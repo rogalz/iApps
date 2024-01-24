@@ -4,17 +4,17 @@ import com.example.images.model.ImageItem
 import com.example.images.model.ImageListViewState
 import javax.inject.Inject
 
-class ImageListReducer @Inject constructor() {
+class ImageListViewStateMapper @Inject constructor() {
 
-    fun reduceImageList(imageEntities: List<ImageItem>): ImageListViewState {
+    fun toSuccess(imageEntities: List<ImageItem>): ImageListViewState {
         return ImageListViewState.Success(imageEntities)
     }
 
-    fun reduceLoading(): ImageListViewState {
+    fun toLoading(): ImageListViewState {
         return ImageListViewState.Loading
     }
 
-    fun reduceError(errorMessage: String): ImageListViewState {
+    fun toError(errorMessage: String): ImageListViewState {
         return ImageListViewState.Error(errorMessage)
     }
 
